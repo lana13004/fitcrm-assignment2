@@ -1,40 +1,55 @@
+<link rel="stylesheet" href="css/styles.css">
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FitCRM - Client View</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <title>FitCRM - Edit Client Details</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <h1>FitCRM</h1>
-    <nav><a href="clients.html">Back to Client List</a></nav>
-  </header>
+  <a href="clients.html" class="nav-link">← Back to Client List</a>
 
-  <main class="container">
-    <section class="card view-card">
-      <h2 id="clientName">Client Name</h2>
-      <div class="client-details">
-        <p><strong>Email:</strong> <span id="clientEmail"></span></p>
-        <p><strong>Phone:</strong> <span id="clientPhone"></span></p>
-        <p><strong>Goal:</strong> <span id="clientGoal"></span></p>
-        <p><strong>Start Date:</strong> <span id="clientStart"></span></p>
-      </div>
-      <hr>
-      <div>
-        <h3>Training History</h3>
-        <ul id="trainingHistory"></ul>
-      </div>
-      <hr>
-      <div>
-        <h3>Suggested Exercises</h3>
-        <div id="exerciseList">Loading exercises…</div>
-      </div>
-    </section>
-  </main>
+  <h2>Edit Client Details</h2>
 
-  <script src="js/main.js"></script>
+  <form>
+    <label>Full Name:
+      <input type="text" name="fullname" value="John Doe" />
+    </label>
+
+    <label>Age:
+      <input type="number" name="age" value="28" />
+    </label>
+
+    <label>Gender:
+      <select name="gender">
+        <option value="male" selected>Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+
+    <label>Email:
+      <input type="email" name="email" value="john@example.com" />
+    </label>
+
+    <label>Phone:
+      <input type="tel" name="phone" value="555-1234" />
+    </label>
+
+    <label>Fitness Goal:
+      <select name="goal">
+        <option value="weightloss" selected>Weight Loss</option>
+        <option value="musclegain">Muscle Gain</option>
+        <option value="generalfitness">General Fitness</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+
+    <label>Membership Start Date:
+      <input type="date" name="startdate" value="2024-01-15" />
+    </label>
+
+    <button type="submit">Save Changes</button>
+  </form>
 </body>
 </html>
-
