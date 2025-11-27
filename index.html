@@ -50,7 +50,7 @@
         <input type="date" id="startDate" required>
       </label>
 
-      <button type="submit">Add Client</button>
+      <button type="submit" class="add-btn">Add Client</button>
     </form>
 
     <a href="clients.html" class="nav-link">View Client List</a>
@@ -59,7 +59,6 @@
   <script>
     const clientForm = document.getElementById('clientForm');
 
-    // Sample clients from Assignment 1
     const sampleClients = [
       { id: 1, name: "Farida Abdelrazek", email: "Faridaabdelrazek@gmail.com", phone: "555-1234", goal: "Weight Loss", startDate: "2024-01-15", age: 28, gender: "Female" },
       { id: 2, name: "Tarek Mohamed", email: "Tarekkmohamed@gmail.com", phone: "555-5678", goal: "Muscle Gain", startDate: "2024-03-12", age: 32, gender: "Male" },
@@ -74,7 +73,11 @@
     ];
 
     // Load clients from localStorage or use sample clients
-    let clients = JSON.parse(localStorage.getItem('clients')) || sampleClients;
+    let clients = JSON.parse(localStorage.getItem('clients'));
+    if (!clients || clients.length === 0) {
+      clients = [...sampleClients];
+      localStorage.setItem('clients', JSON.stringify(clients));
+    }
 
     function saveClients() {
       localStorage.setItem('clients', JSON.stringify(clients));
@@ -100,7 +103,6 @@
       alert('Client added!');
       clientForm.reset();
     });
-
   </script>
 </body>
 </html>
