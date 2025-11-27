@@ -24,36 +24,17 @@
     </tr>
   </thead>
   <tbody id="clientTable">
-    <!-- Rows will be populated dynamically -->
+    <!-- Table rows populated by JS -->
   </tbody>
 </table>
 
 <a href="index.html" class="nav-link">Add New Client</a>
 
 <script>
-  // Sample clients from Assignment 1
-  const sampleClients = [
-    { id: 1, name: "Farida Abdelrazek", email: "Faridaabdelrazek@gmail.com", phone: "555-1234", goal: "Weight Loss", startDate: "2024-01-15", age: 28, gender: "Female" },
-    { id: 2, name: "Tarek Mohamed", email: "Tarekkmohamed@gmail.com", phone: "555-5678", goal: "Muscle Gain", startDate: "2024-03-12", age: 32, gender: "Male" },
-    { id: 3, name: "Lana Ahmed", email: "lanabeshir@gmail.com", phone: "555-8765", goal: "General Fitness", startDate: "2023-11-10", age: 25, gender: "Female" },
-    { id: 4, name: "Mohamed Beshir", email: "Mohamedbeshir@gmail.com", phone: "555-4321", goal: "Weight Loss", startDate: "2024-06-01", age: 30, gender: "Male" },
-    { id: 5, name: "Yassin el Massry", email: "Yassin@gmail.com", phone: "555-6789", goal: "Muscle Gain", startDate: "2025-02-20", age: 27, gender: "Male" },
-    { id: 6, name: "Mirna Sameh", email: "Mirnasameh@gmail.com", phone: "555-3456", goal: "General Fitness", startDate: "2024-09-15", age: 29, gender: "Female" },
-    { id: 7, name: "Malak Solima", email: "Malaksoliman@gmail.com", phone: "555-7890", goal: "Weight Loss", startDate: "2024-12-05", age: 26, gender: "Female" },
-    { id: 8, name: "Ahmed Hany", email: "Ahmedhany@gmail.com", phone: "555-9012", goal: "Muscle Gain", startDate: "2023-08-25", age: 31, gender: "Male" },
-    { id: 9, name: "Ismail Mostafa", email: "Ismailmostafa@gmail.com", phone: "555-2345", goal: "General Fitness", startDate: "2024-04-18", age: 28, gender: "Male" },
-    { id: 10, name: "Gamal Hussein", email: "Gamalhussein@gmail.com", phone: "555-6781", goal: "Weight Loss", startDate: "2025-01-05", age: 33, gender: "Male" }
-  ];
-
-  // Load clients from localStorage or use sample clients
-  let clients = JSON.parse(localStorage.getItem('clients')) || sampleClients;
-
-  function saveClients() {
-    localStorage.setItem('clients', JSON.stringify(clients));
-  }
-
   const clientTable = document.getElementById('clientTable');
   const searchBox = document.getElementById('search');
+
+  let clients = JSON.parse(localStorage.getItem('clients')) || [];
 
   function renderClients(filter = '') {
     clientTable.innerHTML = '';
@@ -76,6 +57,10 @@
       });
   }
 
+  function saveClients() {
+    localStorage.setItem('clients', JSON.stringify(clients));
+  }
+
   function deleteClient(id) {
     if (confirm('Are you sure you want to delete this client?')) {
       clients = clients.filter(c => c.id !== id);
@@ -85,11 +70,10 @@
   }
 
   function editClient(id) {
-    localStorage.setItem('editClientId', id);
+    localStorage.setItem('viewClientId', id);
     window.location.href = 'clients_edits.html';
   }
 
-  // Search functionality
   searchBox.addEventListener('input', () => renderClients(searchBox.value));
 
   // Initial render
