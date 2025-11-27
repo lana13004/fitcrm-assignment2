@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="css/styles.css">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,137 +7,53 @@
 </head>
 <body>
 
-<h2>Client List</h2>
+  <h2>Client List</h2>
 
-<label for="search">Search Clients:</label>
-<input type="text" id="search" name="search" placeholder="Search by client name">
+  <label for="searchBox">Search Clients:</label>
+  <input type="text" id="searchBox" placeholder="Search by client name">
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Phone</th>
-      <th>Fitness Goal</th>
-      <th>Membership Start Date</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td data-label="Name">Farida Abdelrazek</td>
-      <td data-label="Email">Faridaabdelrazek@gmail.com</td>
-      <td data-label="Phone">555-1234</td>
-      <td data-label="Fitness Goal">Weight Loss</td>
-      <td data-label="Membership Start Date">2024-01-15</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Tarek Mohamed</td>
-      <td data-label="Email">Tarekkmohamed@gmail.com</td>
-      <td data-label="Phone">555-5678</td>
-      <td data-label="Fitness Goal">Muscle Gain</td>
-      <td data-label="Membership Start Date">2024-03-12</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Lana Ahmed</td>
-      <td data-label="Email">lanabeshir@gmail.com</td>
-      <td data-label="Phone">555-8765</td>
-      <td data-label="Fitness Goal">General Fitness</td>
-      <td data-label="Membership Start Date">2023-11-10</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Mohamed Beshir</td>
-      <td data-label="Email">Mohamedbeshir@gmail.com</td>
-      <td data-label="Phone">555-4321</td>
-      <td data-label="Fitness Goal">Weight Loss</td>
-      <td data-label="Membership Start Date">2024-06-01</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Yassin el Massry</td>
-      <td data-label="Email">Yassin@gmail.com</td>
-      <td data-label="Phone">555-6789</td>
-      <td data-label="Fitness Goal">Muscle Gain</td>
-      <td data-label="Membership Start Date">2025-02-20</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Mirna Sameh</td>
-      <td data-label="Email">Mirnasameh@gmail.com</td>
-      <td data-label="Phone">555-3456</td>
-      <td data-label="Fitness Goal">General Fitness</td>
-      <td data-label="Membership Start Date">2024-09-15</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Malak Solima</td>
-      <td data-label="Email">Malaksoliman@gmail.com</td>
-      <td data-label="Phone">555-7890</td>
-      <td data-label="Fitness Goal">Weight Loss</td>
-      <td data-label="Membership Start Date">2024-12-05</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Ahmed Hany</td>
-      <td data-label="Email">Ahmedhany@gmail.com</td>
-      <td data-label="Phone">555-9012</td>
-      <td data-label="Fitness Goal">Muscle Gain</td>
-      <td data-label="Membership Start Date">2023-08-25</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Ismail Mostafa</td>
-      <td data-label="Email">Ismailmostafa@gmail.com</td>
-      <td data-label="Phone">555-2345</td>
-      <td data-label="Fitness Goal">General Fitness</td>
-      <td data-label="Membership Start Date">2024-04-18</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td data-label="Name">Gamal Hussein</td>
-      <td data-label="Email">Gamalhussein@gmail.com</td>
-      <td data-label="Phone">555-6781</td>
-      <td data-label="Fitness Goal">Weight Loss</td>
-      <td data-label="Membership Start Date">2025-01-05</td>
-      <td data-label="Actions">
-        <a href="clients_edits.html"><button>Edit</button></a>
-        <button>Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <table id="clientTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Fitness Goal</th>
+        <th>Membership Start Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- JS will populate rows dynamically -->
+    </tbody>
+  </table>
 
-<a href="index.html" class="nav-link">Add New Client</a>
+  <a href="index.html" class="nav-link">Add New Client</a>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Preload Assignment 1 sample clients into localStorage if not already present
+    const sampleClients = [
+      {id: 1, name: "Farida Abdelrazek", email: "Faridaabdelrazek@gmail.com", phone: "555-1234", goal: "Weight Loss", startDate: "2024-01-15"},
+      {id: 2, name: "Tarek Mohamed", email: "Tarekkmohamed@gmail.com", phone: "555-5678", goal: "Muscle Gain", startDate: "2024-03-12"},
+      {id: 3, name: "Lana Ahmed", email: "lanabeshir@gmail.com", phone: "555-8765", goal: "General Fitness", startDate: "2023-11-10"},
+      {id: 4, name: "Mohamed Beshir", email: "Mohamedbeshir@gmail.com", phone: "555-4321", goal: "Weight Loss", startDate: "2024-06-01"},
+      {id: 5, name: "Yassin el Massry", email: "Yassin@gmail.com", phone: "555-6789", goal: "Muscle Gain", startDate: "2025-02-20"},
+      {id: 6, name: "Mirna Sameh", email: "Mirnasameh@gmail.com", phone: "555-3456", goal: "General Fitness", startDate: "2024-09-15"},
+      {id: 7, name: "Malak Solima", email: "Malaksoliman@gmail.com", phone: "555-7890", goal: "Weight Loss", startDate: "2024-12-05"},
+      {id: 8, name: "Ahmed Hany", email: "Ahmedhany@gmail.com", phone: "555-9012", goal: "Muscle Gain", startDate: "2023-08-25"},
+      {id: 9, name: "Ismail Mostafa", email: "Ismailmostafa@gmail.com", phone: "555-2345", goal: "General Fitness", startDate: "2024-04-18"},
+      {id: 10, name: "Gamal Hussein", email: "Gamalhussein@gmail.com", phone: "555-6781", goal: "Weight Loss", startDate: "2025-01-05"}
+    ];
+
+    if(!localStorage.getItem('clients')) {
+      localStorage.setItem('clients', JSON.stringify(sampleClients));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderClients();
+    });
+  </script>
 
 </body>
 </html>
