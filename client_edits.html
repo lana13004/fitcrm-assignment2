@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FitCRM - Edit Client Details</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a href="clients.html" class="nav-link">← Back to Client List</a>
+
+  <h2>Edit Client Details</h2>
+
+  <form id="editForm">
+    <label>Full Name:
+      <input type="text" id="editName" required />
+    </label>
+
+    <label>Age:
+      <input type="number" id="editAge" required />
+    </label>
+
+    <label>Gender:
+      <select id="editGender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+    </label>
+
+    <label>Email:
+      <input type="email" id="editEmail" required />
+    </label>
+
+    <label>Phone:
+      <input type="tel" id="editPhone" required />
+    </label>
+
+    <label>Fitness Goal:
+      <select id="editGoal" required>
+        <option value="Weight Loss">Weight Loss</option>
+        <option value="Muscle Gain">Muscle Gain</option>
+        <option value="General Fitness">General Fitness</option>
+      </select>
+    </label>
+
+    <label>Membership Start Date:
+      <input type="date" id="editStartDate" required />
+    </label>
+
+    <button type="submit">Save Changes</button>
+  </form>
+
+<script src="js/main.js"></script>
+</body>
+</html>
