@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>FitCRM - Client List</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
@@ -24,78 +25,12 @@
     </tr>
   </thead>
   <tbody id="clientTable">
-    <!-- Rows will be added by JS -->
+    <!-- Filled by JS -->
   </tbody>
 </table>
 
 <a href="index.html" class="nav-link">Add New Client</a>
 
-<script>
-  const clientTable = document.getElementById('clientTable');
-  const searchBox = document.getElementById('search');
-
-  let clients = JSON.parse(localStorage.getItem('clients')) || [];
-
-  // RENDER CLIENT LIST WITH EDIT + DELETE + VIEW
-  function renderClients(filter = '') {
-    clientTable.innerHTML = '';
-
-    clients
-      .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
-      .forEach(c => {
-        const tr = document.createElement('tr');
-
-        tr.innerHTML = `
-          <td>${c.name}</td>
-          <td>${c.email}</td>
-          <td>${c.phone}</td>
-          <td>${c.goal}</td>
-          <td>${c.startDate}</td>
-          <td>
-            <button onclick="viewClient(${c.id})">View</button>
-            <button onclick="editClient(${c.id})">Edit</button>
-            <button onclick="deleteClient(${c.id})">Delete</button>
-          </td>
-        `;
-
-        clientTable.appendChild(tr);
-      });
-  }
-
-  // SAVE TO LOCAL STORAGE
-  function saveClients() {
-    localStorage.setItem('clients', JSON.stringify(clients));
-  }
-
-  // DELETE CLIENT
-  function deleteClient(id) {
-    if (confirm("Are you sure you want to delete this client?")) {
-      clients = clients.filter(c => c.id !== id);
-      saveClients();
-      renderClients(searchBox.value);
-    }
-  }
-
-  // EDIT CLIENT
-  function editClient(id) {
-    localStorage.setItem("viewClientId", id);
-    window.location.href = "client_edits.html";
-  }
-
-  // VIEW CLIENT → Goes to Page 3
-  function viewClient(id) {
-    localStorage.setItem("viewClientId", id);
-    window.location.href = "client_view.html";
-  }
-
-  // LIVE SEARCH
-  searchBox.addEventListener("input", () => {
-    renderClients(searchBox.value);
-  });
-
-  // FIRST RENDER
-  renderClients();
-</script>
-
+<script src="./js/main.js" defer></script>
 </body>
 </html>
