@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>FitCRM - Client Details</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
@@ -12,7 +13,7 @@
   <h2>Client Profile</h2>
 
   <div class="form-container" id="clientDetails">
-    <!-- Client info will load here -->
+    <!-- Client info loads here -->
   </div>
 
   <h2>Suggested Exercises for Next Session</h2>
@@ -20,53 +21,6 @@
     <p>Loading exercises...</p>
   </div>
 
-  <script>
-    // Load stored clients
-    const clients = JSON.parse(localStorage.getItem('clients')) || [];
-    const clientId = localStorage.getItem('viewClientId');
-
-    const clientDetailsDiv = document.getElementById("clientDetails");
-    const exerciseListDiv = document.getElementById("exerciseList");
-
-    // Display Client Info
-    function loadClientInfo() {
-      const client = clients.find(c => c.id == clientId);
-
-      if (!client) {
-        clientDetailsDiv.innerHTML = "<p>Client not found.</p>";
-        return;
-      }
-
-      clientDetailsDiv.innerHTML = `
-        <p><strong>Name:</strong> ${client.name}</p>
-        <p><strong>Email:</strong> ${client.email}</p>
-        <p><strong>Phone:</strong> ${client.phone}</p>
-        <p><strong>Goal:</strong> ${client.goal}</p>
-        <p><strong>Membership Start:</strong> ${client.startDate}</p>
-        <p><strong>Training History:</strong> No training history available yet.</p>
-      `;
-    }
-
-    // Fetch Exercises from WGER API
-    async function loadExercises() {
-      try {
-        const response = await fetch("https://wger.de/api/v2/exercise/?limit=5");
-        const data = await response.json();
-
-        const exercises = data.results;
-
-        exerciseListDiv.innerHTML = exercises
-          .map(ex => `<p>• ${ex.name || "Unnamed exercise"}</p>`)
-          .join('');
-
-      } catch (error) {
-        exerciseListDiv.innerHTML = "<p>Failed to load exercises.</p>";
-      }
-    }
-
-    loadClientInfo();
-    loadExercises();
-  </script>
-
+  <script src="./js/main.js" defer></script>
 </body>
 </html>
