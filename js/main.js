@@ -39,17 +39,15 @@
     localStorage.setItem('clients', JSON.stringify(clients));
   }
 
-  // Expose some globals used by HTML onclicks
+  // Expose globals for inline onclicks
   window.viewClient = function (id) {
     localStorage.setItem('viewClientId', id);
     window.location.href = 'client_view.html';
   };
-
   window.editClient = function (id) {
     localStorage.setItem('editClientId', id);
     window.location.href = 'client_edits.html';
   };
-
   window.deleteClient = function (id) {
     if (!confirm("Are you sure you want to delete this client?")) return;
     let clients = loadClients();
@@ -60,7 +58,7 @@
     if (table) renderClients(document.getElementById('search')?.value || '');
   };
 
-  // ----- Rendering client list (for clients.html) -----
+  // ----- Rendering client list (clients.html) -----
   function renderClients(filter = '') {
     const tableBody = document.getElementById('clientTable');
     if (!tableBody) return;
@@ -68,7 +66,6 @@
     tableBody.innerHTML = '';
 
     const filtered = clients.filter(c => c.name.toLowerCase().includes((filter || '').toLowerCase()));
-
     if (filtered.length === 0) {
       tableBody.innerHTML = `<tr><td colspan="6" class="center">No clients found.</td></tr>`;
       return;
@@ -105,7 +102,6 @@
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
-
   function isValidPhone(phone) {
     const digits = phone.replace(/\D/g, '');
     return digits.length >= 6;
@@ -118,13 +114,13 @@
     const pageClientTable = document.getElementById('clientTable');
     const pageSearch = document.getElementById('search');
 
+    // Clients list
     if (pageClientTable) {
       renderClients();
-      if (pageSearch) {
-        pageSearch.addEventListener('input', () => renderClients(pageSearch.value));
-      }
+      if (pageSearch) pageSearch.addEventListener('input', () => renderClients(pageSearch.value));
     }
 
+    // Add client page
     if (pageAddForm) {
       pageAddForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -140,20 +136,11 @@
           alert("Please fill all required fields.");
           return;
         }
-        if (!isValidEmail(email)) {
-          alert("Please enter a valid email address.");
-          return;
-        }
-        if (!isValidPhone(phone)) {
-          alert("Please enter a valid phone number (at least 6 digits).");
-          return;
-        }
+        if (!isValidEmail(email)) { alert("Please enter a valid email."); return; }
+        if (!isValidPhone(phone)) { alert("Please enter a valid phone number."); return; }
 
         const clients = loadClients();
-        const newClient = {
-          id: Date.now(),
-          name, age: age || '', gender: gender || '', email, phone, goal, startDate, history: []
-        };
+        const newClient = { id: Date.now(), name, age, gender, email, phone, goal, startDate, history: [] };
         clients.push(newClient);
         saveClients(clients);
         alert('Client added!');
@@ -161,15 +148,12 @@
       });
     }
 
+    // Edit client page
     if (pageEditForm) {
       const editId = localStorage.getItem('editClientId');
       const clients = loadClients();
       const idx = clients.findIndex(c => c.id == editId);
-      if (idx === -1) {
-        alert("Client not found.");
-        window.location.href = 'clients.html';
-        return;
-      }
+      if (idx === -1) { alert("Client not found."); window.location.href = 'clients.html'; return; }
       const cli = clients[idx];
       document.getElementById('name').value = cli.name || '';
       document.getElementById('age').value = cli.age || '';
@@ -189,32 +173,20 @@
         const goal = document.getElementById('goal').value;
         const startDate = document.getElementById('startDate').value;
 
-        if (!name || !email || !phone || !goal || !startDate) {
-          alert("Please fill all required fields.");
-          return;
-        }
-        if (!isValidEmail(email)) {
-          alert("Please enter a valid email address.");
-          return;
-        }
-        if (!isValidPhone(phone)) {
-          alert("Please enter a valid phone number (at least 6 digits).");
-          return;
-        }
+        if (!name || !email || !phone || !goal || !startDate) { alert("Please fill all required fields."); return; }
+        if (!isValidEmail(email)) { alert("Please enter a valid email."); return; }
+        if (!isValidPhone(phone)) { alert("Please enter a valid phone number."); return; }
 
-        clients[idx] = {
-          ...clients[idx],
-          name, age, gender, email, phone, goal, startDate
-        };
+        clients[idx] = { ...clients[idx], name, age, gender, email, phone, goal, startDate };
         saveClients(clients);
         alert("Client updated successfully!");
         window.location.href = 'clients.html';
       });
     }
 
-    // Client view page wiring (client_view.html)
+    // Client view page
     const clientDetails = document.getElementById('clientDetails');
-    const exerciseList = document.getElementById('exercise-list'); // <-- updated ID
+    const exerciseList = document.getElementById('exercise-list'); // must match <ul id="exercise-list">
     if (clientDetails) {
       const viewId = localStorage.getItem('viewClientId');
       const clients = loadClients();
@@ -232,19 +204,21 @@
         `;
       }
 
-      // Fetch 5 exercises from Wger and populate <ul>
+      // Fetch 5 exercises via CORS proxy
       (async function loadExercises() {
         if (!exerciseList) return;
         try {
           exerciseList.innerHTML = '<li>Loading exercises...</li>';
-          const resp = await fetch('https://wger.de/api/v2/exercise/?limit=5&language=2');
+          const resp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://wger.de/api/v2/exercise/?limit=5&language=2'));
           if (!resp.ok) throw new Error('Network response not ok');
           const data = await resp.json();
-          const results = data.results || [];
+          const results = JSON.parse(data.contents).results;
+
           if (results.length === 0) {
-            exerciseList.innerHTML = '<li>No exercises found from API.</li>';
+            exerciseList.innerHTML = '<li>No exercises found.</li>';
             return;
           }
+
           exerciseList.innerHTML = ''; // clear loading
           results.forEach(ex => {
             const li = document.createElement('li');
@@ -253,10 +227,9 @@
           });
         } catch (err) {
           console.warn('Exercise fetch failed:', err);
-          exerciseList.innerHTML = '<li>Failed to load exercises. Try opening via a web server or deploy to GitHub Pages/Netlify.</li>';
+          exerciseList.innerHTML = '<li>Failed to load exercises. Make sure you open via GitHub Pages or Netlify.</li>';
         }
       })();
     }
   });
-
 })();
