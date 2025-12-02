@@ -56,7 +56,6 @@
     clients = clients.filter(c => c.id !== id);
     saveClients(clients);
 
-    // Try to re-render table if we're on clients.html
     const table = document.getElementById('clientTable');
     if (table) renderClients(document.getElementById('search')?.value || '');
   };
@@ -93,7 +92,6 @@
     });
   }
 
-  // HTML-escape to avoid injected HTML in content
   function escapeHtml(str) {
     if (str === undefined || str === null) return '';
     return String(str)
@@ -104,26 +102,22 @@
       .replaceAll("'", '&#039;');
   }
 
-  // ----- Form validation helpers -----
   function isValidEmail(email) {
-    // Basic email regex (sufficient for assignment)
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
   function isValidPhone(phone) {
-    // Allow digits, spaces, dashes, plus; require at least 6 digits
     const digits = phone.replace(/\D/g, '');
     return digits.length >= 6;
   }
 
   // ----- Page-specific wiring -----
   document.addEventListener('DOMContentLoaded', () => {
-    const pageAddForm = document.getElementById('clientForm'); // index.html
-    const pageEditForm = document.getElementById('editClientForm'); // client_edits.html
-    const pageClientTable = document.getElementById('clientTable'); // clients.html
-    const pageSearch = document.getElementById('search'); // clients.html
+    const pageAddForm = document.getElementById('clientForm');
+    const pageEditForm = document.getElementById('editClientForm');
+    const pageClientTable = document.getElementById('clientTable');
+    const pageSearch = document.getElementById('search');
 
-    // Clients list page wiring
     if (pageClientTable) {
       renderClients();
       if (pageSearch) {
@@ -131,7 +125,6 @@
       }
     }
 
-    // Add Client page wiring (index.html)
     if (pageAddForm) {
       pageAddForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -168,19 +161,16 @@
       });
     }
 
-    // Edit Client page wiring (client_edits.html)
     if (pageEditForm) {
       const editId = localStorage.getItem('editClientId');
       const clients = loadClients();
       const idx = clients.findIndex(c => c.id == editId);
       if (idx === -1) {
         alert("Client not found.");
-        // safe fallback: go back to list
         window.location.href = 'clients.html';
         return;
       }
       const cli = clients[idx];
-      // prefill
       document.getElementById('name').value = cli.name || '';
       document.getElementById('age').value = cli.age || '';
       document.getElementById('gender').value = cli.gender || '';
@@ -191,7 +181,6 @@
 
       pageEditForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        // gather and validate
         const name = document.getElementById('name').value.trim();
         const age = document.getElementById('age').value;
         const gender = document.getElementById('gender').value;
@@ -213,7 +202,6 @@
           return;
         }
 
-        // update
         clients[idx] = {
           ...clients[idx],
           name, age, gender, email, phone, goal, startDate
@@ -226,7 +214,7 @@
 
     // Client view page wiring (client_view.html)
     const clientDetails = document.getElementById('clientDetails');
-    const exerciseList = document.getElementById('exerciseList');
+    const exerciseList = document.getElementById('exercise-list'); // <-- updated ID
     if (clientDetails) {
       const viewId = localStorage.getItem('viewClientId');
       const clients = loadClients();
@@ -244,24 +232,28 @@
         `;
       }
 
-      // Fetch 5 exercises from Wger (public API)
+      // Fetch 5 exercises from Wger and populate <ul>
       (async function loadExercises() {
         if (!exerciseList) return;
         try {
-          exerciseList.innerHTML = '<p>Loading exercises...</p>';
-          // fetch 5 exercises (language=2 usually English). API supports pagination
+          exerciseList.innerHTML = '<li>Loading exercises...</li>';
           const resp = await fetch('https://wger.de/api/v2/exercise/?limit=5&language=2');
           if (!resp.ok) throw new Error('Network response not ok');
           const data = await resp.json();
           const results = data.results || [];
           if (results.length === 0) {
-            exerciseList.innerHTML = '<p>No exercises found from API.</p>';
+            exerciseList.innerHTML = '<li>No exercises found from API.</li>';
             return;
           }
-          exerciseList.innerHTML = results.map(ex => `<p>• ${escapeHtml(ex.name || 'Unnamed')}</p>`).join('');
+          exerciseList.innerHTML = ''; // clear loading
+          results.forEach(ex => {
+            const li = document.createElement('li');
+            li.textContent = ex.name || 'Unnamed';
+            exerciseList.appendChild(li);
+          });
         } catch (err) {
           console.warn('Exercise fetch failed:', err);
-          exerciseList.innerHTML = '<p>Failed to load exercises (API may block CORS). Try opening app via a web server or deploy to Netlify/GitHub Pages.</p>';
+          exerciseList.innerHTML = '<li>Failed to load exercises. Try opening via a web server or deploy to GitHub Pages/Netlify.</li>';
         }
       })();
     }
