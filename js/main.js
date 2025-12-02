@@ -39,7 +39,6 @@
     localStorage.setItem('clients', JSON.stringify(clients));
   }
 
-  // Expose globals for inline onclicks
   window.viewClient = function (id) {
     localStorage.setItem('viewClientId', id);
     window.location.href = 'client_view.html';
@@ -53,24 +52,20 @@
     let clients = loadClients();
     clients = clients.filter(c => c.id !== id);
     saveClients(clients);
-
     const table = document.getElementById('clientTable');
     if (table) renderClients(document.getElementById('search')?.value || '');
   };
 
-  // ----- Rendering client list (clients.html) -----
   function renderClients(filter = '') {
     const tableBody = document.getElementById('clientTable');
     if (!tableBody) return;
     const clients = loadClients();
     tableBody.innerHTML = '';
-
     const filtered = clients.filter(c => c.name.toLowerCase().includes((filter || '').toLowerCase()));
     if (filtered.length === 0) {
       tableBody.innerHTML = `<tr><td colspan="6" class="center">No clients found.</td></tr>`;
       return;
     }
-
     filtered.forEach(c => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -114,13 +109,11 @@
     const pageClientTable = document.getElementById('clientTable');
     const pageSearch = document.getElementById('search');
 
-    // Clients list
     if (pageClientTable) {
       renderClients();
       if (pageSearch) pageSearch.addEventListener('input', () => renderClients(pageSearch.value));
     }
 
-    // Add client page
     if (pageAddForm) {
       pageAddForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -145,7 +138,6 @@
       });
     }
 
-    // Edit client page
     if (pageEditForm) {
       const editId = localStorage.getItem('editClientId');
       const clients = loadClients();
@@ -201,35 +193,38 @@
         `;
       }
 
-      // Fetch 5 exercises via CORS proxy (AllOrigins)
+      // Fetch exercises with fallback
       (async function loadExercises() {
         if (!exerciseList) return;
+        exerciseList.innerHTML = '<li>Loading exercises...</li>';
+
         try {
-          exerciseList.innerHTML = '<li>Loading exercises...</li>';
           const resp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://wger.de/api/v2/exercise/?limit=5&language=2'));
           if (!resp.ok) throw new Error('Network response not ok');
           const data = await resp.json();
           const results = JSON.parse(data.contents).results;
 
-          if (results.length === 0) {
-            exerciseList.innerHTML = '<li>No exercises found.</li>';
-            return;
-          }
+          if (!results || results.length === 0) throw new Error('No exercises found');
 
-          exerciseList.innerHTML = ''; // clear loading
+          exerciseList.innerHTML = '';
           results.forEach(ex => {
             const li = document.createElement('li');
             li.textContent = ex.name || 'Unnamed';
             exerciseList.appendChild(li);
           });
         } catch (err) {
-          console.warn('Exercise fetch failed:', err);
-          // Fallback static list
-          const fallbackExercises = ["Push-ups", "Squats", "Lunges", "Plank", "Jumping Jacks"];
+          console.warn('Exercise fetch failed, using fallback list.', err);
+          const fallback = [
+            { name: "Push-ups" },
+            { name: "Squats" },
+            { name: "Lunges" },
+            { name: "Plank" },
+            { name: "Jumping Jacks" }
+          ];
           exerciseList.innerHTML = '';
-          fallbackExercises.forEach(name => {
+          fallback.forEach(ex => {
             const li = document.createElement('li');
-            li.textContent = name;
+            li.textContent = ex.name;
             exerciseList.appendChild(li);
           });
         }
