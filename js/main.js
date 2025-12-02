@@ -132,10 +132,7 @@
         const goal = document.getElementById('goal').value;
         const startDate = document.getElementById('startDate').value;
 
-        if (!name || !email || !phone || !goal || !startDate) {
-          alert("Please fill all required fields.");
-          return;
-        }
+        if (!name || !email || !phone || !goal || !startDate) { alert("Please fill all required fields."); return; }
         if (!isValidEmail(email)) { alert("Please enter a valid email."); return; }
         if (!isValidPhone(phone)) { alert("Please enter a valid phone number."); return; }
 
@@ -204,7 +201,7 @@
         `;
       }
 
-      // Fetch 5 exercises via CORS proxy
+      // Fetch 5 exercises via CORS proxy (AllOrigins)
       (async function loadExercises() {
         if (!exerciseList) return;
         try {
@@ -227,7 +224,14 @@
           });
         } catch (err) {
           console.warn('Exercise fetch failed:', err);
-          exerciseList.innerHTML = '<li>Failed to load exercises. Make sure you open via GitHub Pages or Netlify.</li>';
+          // Fallback static list
+          const fallbackExercises = ["Push-ups", "Squats", "Lunges", "Plank", "Jumping Jacks"];
+          exerciseList.innerHTML = '';
+          fallbackExercises.forEach(name => {
+            const li = document.createElement('li');
+            li.textContent = name;
+            exerciseList.appendChild(li);
+          });
         }
       })();
     }
